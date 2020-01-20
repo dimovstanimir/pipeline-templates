@@ -87,7 +87,7 @@ stages:
                 inputs:
                   RepositoryUrl: '$(Build.Repository.GitUri)/terraform-pipeline'
                   RepositoryPath: '$(Agent.BuildDirectory)'
-                  BranchTag: ''pipeline-templates-support''
+                  BranchTag: 'pipeline-templates-support'
 #                - task: DownloadBuildArtifacts@0
 #                  displayName: 'Download Artifacts'
 #                  inputs:
