@@ -3,12 +3,6 @@ parameters:
   terraformVersion: ''  # Terraform version
 
 steps:
-  - download: none
-
-  - checkout: self
-
-  - script: dir $(Build.SourcesDirectory)
-
   - task: DownloadSecureFile@1
     name: secrets
     displayName: 'Download secrets'

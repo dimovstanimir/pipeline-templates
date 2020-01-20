@@ -10,7 +10,7 @@ stages:
           vmImage: ${{ parameters.vmImage }}
         continueOnError: false
         steps:
-        - template: terraform-steps.yml
+        - template: terraform-build-steps.yml
           parameters:
             vmImage: ${{ parameters.vmImage }}
             terraformVersion: ${{ parameters.terraformVersion }}
@@ -28,7 +28,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - template: terraform-steps.yml
+            - template: terraform-deploy-steps.yml
               parameters:
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
@@ -46,7 +46,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - template: terraform-steps.yml
+            - template: terraform-deploy-steps.yml
               parameters:
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
@@ -64,7 +64,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - template: terraform-steps.yml
+            - template: terraform-deploy-steps.yml
               parameters:
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
@@ -82,7 +82,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - template: terraform-steps.yml
+            - template: terraform-deploy-steps.yml
               parameters:
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
