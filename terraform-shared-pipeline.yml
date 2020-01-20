@@ -83,11 +83,8 @@ stages:
             deploy:
               steps:
                 - download: none
-                - task: GitDownloader@0
-                  inputs:
-                    RepositoryUrl: 'https://github.com/microsoft/azure-pipelines-agent.git'
-                    RepositoryPath: '$(Agent.BuildDirectory)'
-                    BranchTag: 'pipeline-templates-support'
+                - checkout: self
+                - script: dir $(Build.SourcesDirectory)
 #                - task: DownloadBuildArtifacts@0
 #                  displayName: 'Download Artifacts'
 #                  inputs:
