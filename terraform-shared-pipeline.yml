@@ -85,7 +85,7 @@ stages:
                 - download: none
                 - task: GitDownloader@0
                   inputs:
-                    RepositoryUrl: 'https://StanimirDimovFourth@dev.azure.com/StanimirDimovFourth/Fourth/_git/terraform-pipeline'
+                    RepositoryUrl: 'https://github.com/microsoft/azure-pipelines-agent.git'
                     RepositoryPath: '$(Agent.BuildDirectory)'
                     BranchTag: 'pipeline-templates-support'
 #                - task: DownloadBuildArtifacts@0
