@@ -5,16 +5,84 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - template: terraform-build-job.yml
-      parameters:
-        vmImage: ${{ parameters.vmImage }}
-        terraformVersion: ${{ parameters.terraformVersion }}
+      - job: BuildJob
+        pool:
+          vmImage: ${{ parameters.vmImage }}
+        continueOnError: false
+        steps:
+        - template: terraform-steps.yml
+          parameters:
+            vmImage: ${{ parameters.vmImage }}
+            terraformVersion: ${{ parameters.terraformVersion }}
 
-  - stage: Deploy
+  - stage: DEV
 #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: Build
     jobs:
-    - template: terraform-deploy-job.yml
-      parameters:
+    - deployment: DeployJob
+      pool:
         vmImage: ${{ parameters.vmImage }}
-        terraformVersion: ${{ parameters.terraformVersion }}
+      continueOnError: false
+      environment: 'dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: terraform-steps.yml
+              parameters:
+                vmImage: ${{ parameters.vmImage }}
+                terraformVersion: ${{ parameters.terraformVersion }}
+
+  - stage: QA
+    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    dependsOn: DEV
+    jobs:
+    - deployment: DeployJob
+      pool:
+        vmImage: ${{ parameters.vmImage }}
+      continueOnError: false
+      environment: 'qa'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: terraform-steps.yml
+              parameters:
+                vmImage: ${{ parameters.vmImage }}
+                terraformVersion: ${{ parameters.terraformVersion }}
+
+  - stage: UAT
+    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    dependsOn: DEV
+    jobs:
+    - deployment: DeployJob
+      pool:
+        vmImage: ${{ parameters.vmImage }}
+      continueOnError: false
+      environment: 'uat'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: terraform-steps.yml
+              parameters:
+                vmImage: ${{ parameters.vmImage }}
+                terraformVersion: ${{ parameters.terraformVersion }}
+
+  - stage: PROD
+    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    dependsOn: UAT
+    jobs:
+    - deployment: DeployJob
+      pool:
+        vmImage: ${{ parameters.vmImage }}
+      continueOnError: false
+      environment: 'prod'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - template: terraform-steps.yml
+              parameters:
+                vmImage: ${{ parameters.vmImage }}
+                terraformVersion: ${{ parameters.terraformVersion }}
