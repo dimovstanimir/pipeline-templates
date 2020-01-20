@@ -6,6 +6,9 @@ stages:
   - stage: Build
     jobs:
     - template: terraform-build-job.yml
+    parameters:
+      vmImage: $(vmImage)
+      terraformVersion: $(tfVersion)
 #      - job: BuildJob
 #        pool:
 #          vmImage: ${{ parameters.vmImage }}
