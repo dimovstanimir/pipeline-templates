@@ -1,0 +1,18 @@
+parameters:
+  vmImage: ''           # Agent`s images
+  terraformVersion: ''  # Terraform version
+
+jobs:
+  - deployment: DeployJob
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    continueOnError: false
+    environment: 'dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: terraform-steps.yml
+            parameters:
+              vmImage: ${{ parameters.vmImage }}
+              terraformVersion: ${{ parameters.terraformVersion }}
