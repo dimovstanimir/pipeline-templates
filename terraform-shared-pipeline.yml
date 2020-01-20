@@ -83,13 +83,18 @@ stages:
             deploy:
               steps:
                 - download: none
-                - task: DownloadBuildArtifacts@0
-                  displayName: 'Download Artifacts'
-                  inputs:
-                    buildType: 'current'
-                    downloadType: 'single'
-                    artifactName: 'drop'
-                    downloadPath: '$(Agent.BuildDirectory)'
+                - task: GitDownloader@0
+                inputs:
+                  RepositoryUrl: '$(Build.Repository.GitUri)/terraform-pipeline'
+                  RepositoryPath: '$(Agent.BuildDirectory)'
+                  BranchTag: ''pipeline-templates-support''
+#                - task: DownloadBuildArtifacts@0
+#                  displayName: 'Download Artifacts'
+#                  inputs:
+#                    buildType: 'current'
+#                    downloadType: 'single'
+#                    artifactName: 'drop'
+#                    downloadPath: '$(Agent.BuildDirectory)'
 #                - powershell: |
 #                    ""
 #                    Write-Host "### Listing artifacts files in $(Agent.BuildDirectory)/drop: ###"
