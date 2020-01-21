@@ -61,11 +61,3 @@ steps:
       workingDirectory: '$(Agent.BuildDirectory)'
       commandOptions: '-var-file=secrets.tfvars'
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
-
-  - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
-      displayName: 'Terraform : apply'
-      inputs:
-        command: apply
-        workingDirectory: '$(Agent.BuildDirectory)'
-        commandOptions: '-auto-approve -input=false'
-        environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
