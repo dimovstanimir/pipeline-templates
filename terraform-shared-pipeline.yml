@@ -4,8 +4,6 @@ parameters:
 
 stages:
   - stage: Build
-    variables:
-      tfApply: 'false'
     jobs:
       - job: BuildJob
         pool:
@@ -14,15 +12,13 @@ stages:
         steps:
         - template: terraform-shared-pipeline-steps.yml
           parameters:
-            tfApply: $(tfApply)
+            tfApply: 'false'
             vmImage: ${{ parameters.vmImage }}
             terraformVersion: ${{ parameters.terraformVersion }}
 
   - stage: DEV
 #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: Build
-    variables:
-      tfApply: 'true'
     jobs:
     - deployment: DeployJob
       pool:
