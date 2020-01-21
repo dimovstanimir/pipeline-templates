@@ -4,7 +4,7 @@ parameters:
 
 steps:
   - checkout: self
-    condition: and(succeeded(), in(variables['env'], 'dev', 'qa', 'uat', 'prod'))
+    condition: and(succeeded(), in(variables['env'], 'build', 'dev', 'qa', 'uat', 'prod'))
 
   - task: DownloadSecureFile@1
     name: secrets
