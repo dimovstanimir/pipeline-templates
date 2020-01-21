@@ -74,4 +74,4 @@ steps:
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
   - powershell: |
       ""
-      Write-Host %env%
+      Write-Host $(env)
