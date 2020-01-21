@@ -14,7 +14,7 @@ stages:
         steps:
         - template: terraform-shared-pipeline-steps.yml
           parameters:
-            tfApply: ${{ parameters.tfApply }}
+            tfApply: $(tfApply)
             vmImage: ${{ parameters.vmImage }}
             terraformVersion: ${{ parameters.terraformVersion }}
 
