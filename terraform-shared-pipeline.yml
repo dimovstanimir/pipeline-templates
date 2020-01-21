@@ -12,7 +12,7 @@ stages:
           vmImage: ${{ parameters.vmImage }}
         continueOnError: false
         steps:
-        - template: terraform-build-steps.yml
+        - template: terraform-shared-pipeline-steps.yml
           parameters:
             vmImage: ${{ parameters.vmImage }}
             terraformVersion: ${{ parameters.terraformVersion }}
