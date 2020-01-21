@@ -79,4 +79,4 @@ steps:
 
   - powershell: |
       Write-Host "This value is: $(env)"
-      displayName: 'Output the value'
+    displayName: 'Output the value'
