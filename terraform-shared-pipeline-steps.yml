@@ -3,6 +3,9 @@ parameters:
   terraformVersion: ''  # Terraform version
 
 steps:
+  - checkout: self
+    condition: and(succeeded(), in(variables['env'], 'dev', 'qa', 'uat', 'prod'))
+
   - task: DownloadSecureFile@1
     name: secrets
     displayName: 'Download secrets'
@@ -65,7 +68,7 @@ steps:
   - task: TerraformTaskV1@0
     displayName: 'Terraform: apply'
     condition: and(succeeded(), in(variables['env'], 'dev', 'qa', 'uat', 'prod'))
-    #    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
+#    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
     inputs:
       provider: 'azurerm'
       command: 'apply'
