@@ -5,7 +5,7 @@ parameters:
 stages:
   - stage: Build
     variables:
-      tfApply: 'false'
+      tfApply: 'False'
     jobs:
       - job: BuildJob
         pool:
@@ -22,7 +22,7 @@ stages:
 #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: Build
     variables:
-      tfApply: 'true'
+      tfApply: 'True'
     jobs:
     - deployment: DeployJob
       pool:
