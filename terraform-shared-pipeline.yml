@@ -1,9 +1,11 @@
 parameters:
-  vmImage: ''           # Agent`s images
+  vmImage: ''           # Agent`s image
   terraformVersion: ''  # Terraform version
 
 stages:
   - stage: Build
+    variables:
+      еnv: build
     jobs:
       - job: BuildJob
         pool:
@@ -14,75 +16,83 @@ stages:
           parameters:
             vmImage: ${{ parameters.vmImage }}
             terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: DEV
-#    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: Build
-    jobs:
-    - deployment: DeployJob
-      pool:
-        vmImage: ${{ parameters.vmImage }}
-      continueOnError: false
-      environment: 'dev'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - template: terraform-deploy-steps.yml
-              parameters:
-                vmImage: ${{ parameters.vmImage }}
-                terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: QA
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: DEV
-    jobs:
-    - deployment: DeployJob
-      pool:
-        vmImage: ${{ parameters.vmImage }}
-      continueOnError: false
-      environment: 'qa'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - template: terraform-deploy-steps.yml
-              parameters:
-                vmImage: ${{ parameters.vmImage }}
-                terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: UAT
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: DEV
-    jobs:
-    - deployment: DeployJob
-      pool:
-        vmImage: ${{ parameters.vmImage }}
-      continueOnError: false
-      environment: 'uat'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - template: terraform-deploy-steps.yml
-              parameters:
-                vmImage: ${{ parameters.vmImage }}
-                terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: PROD
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: UAT
-    jobs:
-    - deployment: DeployJob
-      pool:
-        vmImage: ${{ parameters.vmImage }}
-      continueOnError: false
-      environment: 'prod'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - template: terraform-deploy-steps.yml
-              parameters:
-                vmImage: ${{ parameters.vmImage }}
-                terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: DEV
+##    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: Build
+#    variables:
+#      еnv: dev
+#    jobs:
+#    - deployment: DeployJob
+#      pool:
+#        vmImage: ${{ parameters.vmImage }}
+#      continueOnError: false
+#      environment: 'dev'
+#      strategy:
+#        runOnce:
+#          deploy:
+#            steps:
+#            - template: terraform-deploy-steps.yml
+#              parameters:
+#                vmImage: ${{ parameters.vmImage }}
+#                terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: QA
+#    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: DEV
+#    variables:
+#      еnv: qa
+#    jobs:
+#    - deployment: DeployJob
+#      pool:
+#        vmImage: ${{ parameters.vmImage }}
+#      continueOnError: false
+#      environment: 'qa'
+#      strategy:
+#        runOnce:
+#          deploy:
+#            steps:
+#            - template: terraform-deploy-steps.yml
+#              parameters:
+#                vmImage: ${{ parameters.vmImage }}
+#                terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: UAT
+#    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: DEV
+#    variables:
+#      еnv: uat
+#    jobs:
+#    - deployment: DeployJob
+#      pool:
+#        vmImage: ${{ parameters.vmImage }}
+#      continueOnError: false
+#      environment: 'uat'
+#      strategy:
+#        runOnce:
+#          deploy:
+#            steps:
+#            - template: terraform-deploy-steps.yml
+#              parameters:
+#                vmImage: ${{ parameters.vmImage }}
+#                terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: PROD
+#    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: UAT
+#    variables:
+#      еnv: prod
+#    jobs:
+#    - deployment: DeployJob
+#      pool:
+#        vmImage: ${{ parameters.vmImage }}
+#      continueOnError: false
+#      environment: 'prod'
+#      strategy:
+#        runOnce:
+#          deploy:
+#            steps:
+#            - template: terraform-deploy-steps.yml
+#              parameters:
+#                vmImage: ${{ parameters.vmImage }}
+#                terraformVersion: ${{ parameters.terraformVersion }}
