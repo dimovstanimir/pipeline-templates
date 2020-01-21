@@ -64,7 +64,7 @@ steps:
 
   - task: TerraformTaskV1@0
     displayName: 'Terraform: apply'
-    condition: and(succeeded(), eq(variables['env'], 'qa'))
+    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
     inputs:
       provider: 'azurerm'
       command: 'apply'
