@@ -1,7 +1,6 @@
 parameters:
   vmImage: ''           # Agent`s images
   terraformVersion: ''  # Terraform version
-  env: ''
 
 steps:
   - checkout: self
@@ -68,7 +67,7 @@ steps:
 
   - task: TerraformTaskV1@0
     displayName: 'Terraform: apply'
-    condition: and(succeeded(), in(variables['ENVIRONMENT_NAME'], 'DEV', 'qa', 'uat', 'prod'))
+    condition: and(succeeded(), in(variables['ENVIRONMENT_NAME'], 'dev', 'qa', 'uat', 'prod'))
 #    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
     inputs:
       provider: 'azurerm'

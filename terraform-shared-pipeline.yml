@@ -35,7 +35,6 @@ stages:
             steps:
             - template: terraform-shared-pipeline-steps.yml
               parameters:
-                env: $(env)
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
 #
