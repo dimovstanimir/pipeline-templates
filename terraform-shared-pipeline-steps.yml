@@ -1,7 +1,7 @@
 parameters:
   vmImage: ''           # Agent`s images
   terraformVersion: ''  # Terraform version
-  env: ''               # Environment
+  tfApply: ''           # Terraform apply action(boolean type)
 
 steps:
   - checkout: self
@@ -68,7 +68,7 @@ steps:
 
   - task: TerraformTaskV1@0
     displayName: 'Terraform: apply'
-    condition: and(succeeded(), eq('${{ parameters.env }}', true))
+    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
 #    condition: and(succeeded(), in(variables['ENVIRONMENT_NAME'], 'dev', 'qa', 'uat', 'prod'))
 #    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
     inputs:
