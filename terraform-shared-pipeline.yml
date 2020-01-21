@@ -22,7 +22,7 @@ stages:
 #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: Build
     variables:
-      еnv: dev
+      еnv: 'dev'
     jobs:
     - deployment: DeployJob
       pool:
@@ -35,6 +35,7 @@ stages:
             steps:
             - template: terraform-shared-pipeline-steps.yml
               parameters:
+                env: $(env)
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
 #

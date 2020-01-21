@@ -1,6 +1,7 @@
 parameters:
   vmImage: ''           # Agent`s images
   terraformVersion: ''  # Terraform version
+  env: ''
 
 steps:
   - checkout: self
