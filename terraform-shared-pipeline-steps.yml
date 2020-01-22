@@ -78,7 +78,7 @@ steps:
       commandOptions: '-auto-approve -input=false -var-file=secrets.tfvars'
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
 
-  - powershell: |
-#      Write-Host "This value is: ${{ parameters.tfApply }}"
-      Write-Host "This value is: ${{ parameters.env }}"
-    displayName: 'Output the value'
+#  - powershell: |
+##      Write-Host "This value is: ${{ parameters.tfApply }}"
+#      Write-Host "This value is: ${{ parameters.env }} "
+#    displayName: 'Output the value'
