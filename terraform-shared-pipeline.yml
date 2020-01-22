@@ -23,7 +23,7 @@ stages:
 #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: Build
     variables:
-      env: "env"
+      env: "dev"
     jobs:
     - deployment: DeployJob
       pool:
