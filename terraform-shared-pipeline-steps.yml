@@ -6,7 +6,7 @@ parameters:                 # Pass parameters from upper pipeline otherwise defa
 steps:
   - checkout: self
 #    condition: and(succeeded(), in(variables['env'], 'build', 'dev', 'qa', 'uat', 'prod'))
-    path: '$(Agent.BuildDirectory)'
+    path: '$(Agent.BuildDirectory)\terraform'
 
 
   - task: DownloadSecureFile@1
