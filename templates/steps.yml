@@ -12,7 +12,7 @@ steps:
       targetType: 'inline'
       script: |
         # Write your commands here
-        echo "The value for variable env is ${{ parameters.env }}"
+        echo "The value for variable 'env' is ${{ parameters.env }}"
         echo "The value for variable 'storageresourcegroup' is $(storageresourcegroup)"
         echo "The value for variable 'storageaccount' is $(storageaccount)"
         echo "The value for variable 'storageblob' is $(storageblob)"
