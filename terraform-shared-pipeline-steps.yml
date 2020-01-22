@@ -20,13 +20,13 @@ steps:
       Contents: '$(secrets.secureFilePath)'
       TargetFolder: '$(Agent.BuildDirectory)'
 
-#  - task: CopyFiles@2
-#    displayName: 'Copy terraform files'
-#    inputs:
-#      SourceFolder: '$(Build.Repository.LocalPath)'
-#      Contents: |
-#        **
-#      TargetFolder: '$(Agent.BuildDirectory)'
+  - task: CopyFiles@2
+    displayName: 'Copy terraform files'
+    inputs:
+      SourceFolder: '$(Build.Repository.LocalPath)'
+      Contents: |
+        **
+      TargetFolder: '$(Agent.BuildDirectory)'
 
   - task: replacetokens@3
     displayName: 'Replace tokens'
