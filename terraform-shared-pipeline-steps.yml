@@ -80,5 +80,5 @@ steps:
 
   - powershell: |
 ##      Write-Host "This value is: ${{ parameters.tfApply }}"
-    Write-Host "This value is: ${{ parameters.env }}"
+      Write-Host "This value is: ${{ parameters.env }}"
     displayName: 'Output the value'
