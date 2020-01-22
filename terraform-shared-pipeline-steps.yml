@@ -1,13 +1,11 @@
 parameters:                 # Pass parameters from upper pipeline otherwise default values are applied.
   vmImage: ''               # Agent`s images
   terraformVersion: ''      # Terraform version
-  tfApply: 'true'           # Terraform apply action(boolean type)
+#  tfApply: 'true'           # Terraform apply action(boolean type)
+  env: ''
 
 steps:
   - checkout: self
-#    condition: and(succeeded(), in(variables['env'], 'build', 'dev', 'qa', 'uat', 'prod'))
-    path: '$(Agent.BuildDirectory)\terraform'
-
 
   - task: DownloadSecureFile@1
     name: secrets
@@ -70,8 +68,8 @@ steps:
 
   - task: TerraformTaskV1@0
     displayName: 'Terraform: apply'
-    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
-#    condition: and(succeeded(), in(variables['ENVIRONMENT_NAME'], 'dev', 'qa', 'uat', 'prod'))
+#    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
+    condition: and(succeeded(), in('${{ parameters.env }}', 'dev', 'qa', 'uat', 'prod'))
 #    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
     inputs:
       provider: 'azurerm'
@@ -81,5 +79,6 @@ steps:
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
 
   - powershell: |
-      Write-Host "This value is: ${{ parameters.tfApply }}"
+#      Write-Host "This value is: ${{ parameters.tfApply }}"
+      Write-Host "This value is: ${{ parameters.env }}"
     displayName: 'Output the value'

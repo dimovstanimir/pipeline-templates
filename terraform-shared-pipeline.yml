@@ -4,6 +4,8 @@ parameters:
 
 stages:
   - stage: Build
+    variables:
+      env: 'build'
     jobs:
       - job: BuildJob
         pool:
@@ -12,7 +14,8 @@ stages:
         steps:
         - template: terraform-shared-pipeline-steps.yml
           parameters:
-            tfApply: 'false'
+#            tfApply: 'false'
+            env: $(build)
             vmImage: ${{ parameters.vmImage }}
             terraformVersion: ${{ parameters.terraformVersion }}
 
