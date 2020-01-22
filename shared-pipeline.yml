@@ -35,60 +35,60 @@ stages:
                 env: 'dev'
                 vmImage: ${{ parameters.vmImage }}
                 terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: QA
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: DEV
-    jobs:
-      - deployment: DeployJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        environment: 'qa'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: templates/steps.yml
-                  parameters:
-                    env: 'qa'
-                    vmImage: ${{ parameters.vmImage }}
-                    terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: UAT
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: DEV
-    jobs:
-      - deployment: DeployJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        environment: 'uat'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: templates/steps.yml
-                  parameters:
-                    env: 'uat'
-                    vmImage: ${{ parameters.vmImage }}
-                    terraformVersion: ${{ parameters.terraformVersion }}
-
-  - stage: PROD
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: UAT
-    jobs:
-      - deployment: DeployJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        environment: 'prod'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: templates/steps.yml
-                  parameters:
-                    env: 'prod'
-                    vmImage: ${{ parameters.vmImage }}
-                    terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: QA
+#    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: DEV
+#    jobs:
+#      - deployment: DeployJob
+#        pool:
+#          vmImage: ${{ parameters.vmImage }}
+#        continueOnError: false
+#        environment: 'qa'
+#        strategy:
+#          runOnce:
+#            deploy:
+#              steps:
+#                - template: templates/steps.yml
+#                  parameters:
+#                    env: 'qa'
+#                    vmImage: ${{ parameters.vmImage }}
+#                    terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: UAT
+#    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: DEV
+#    jobs:
+#      - deployment: DeployJob
+#        pool:
+#          vmImage: ${{ parameters.vmImage }}
+#        continueOnError: false
+#        environment: 'uat'
+#        strategy:
+#          runOnce:
+#            deploy:
+#              steps:
+#                - template: templates/steps.yml
+#                  parameters:
+#                    env: 'uat'
+#                    vmImage: ${{ parameters.vmImage }}
+#                    terraformVersion: ${{ parameters.terraformVersion }}
+#
+#  - stage: PROD
+#    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#    dependsOn: UAT
+#    jobs:
+#      - deployment: DeployJob
+#        pool:
+#          vmImage: ${{ parameters.vmImage }}
+#        continueOnError: false
+#        environment: 'prod'
+#        strategy:
+#          runOnce:
+#            deploy:
+#              steps:
+#                - template: templates/steps.yml
+#                  parameters:
+#                    env: 'prod'
+#                    vmImage: ${{ parameters.vmImage }}
+#                    terraformVersion: ${{ parameters.terraformVersion }}
