@@ -78,6 +78,5 @@ steps:
       commandOptions: '-auto-approve -input=false -var-file=secrets.tfvars'
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
 
-  - powershell: |
-      Write-Host "Value of parameter "env" is: ${{ parameters.env }}"
+  - script: echo ${{ parameters.env }}
     displayName: 'Output the value'
