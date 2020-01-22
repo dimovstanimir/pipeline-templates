@@ -8,11 +8,11 @@ steps:
   - checkout: self
 
   - bash:
-      printf "The value for variable env is ${{ parameters.env }}\n"
-      printf "The value for variable 'storageresourcegroup' is $(storageresourcegroup)\n"
-      printf "The value for variable 'storageaccount' is $(storageaccount)\n"
-      printf "The value for variable 'storageblob' is $(storageblob)\n"
-      printf "The value for variable 'tfstate' is $(tfstate)\n"
+      echo "The value for variable env is ${{ parameters.env }} \n"
+      echo "The value for variable 'storageresourcegroup' is $(storageresourcegroup) \n"
+      echo "The value for variable 'storageaccount' is $(storageaccount) \n"
+      echo "The value for variable 'storageblob' is $(storageblob) \n"
+      echo "The value for variable 'tfstate' is $(tfstate) \n"
     displayName: 'Output values'
 
   - task: DownloadSecureFile@1
