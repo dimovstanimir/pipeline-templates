@@ -1,94 +1,82 @@
-parameters:
-  vmImage: ''           # Agent`s image
-  terraformVersion: ''  # Terraform version
+parameters:                 # Pass parameters from upper pipeline otherwise default values are applied.
+  vmImage: ''               # Agent`s images
+  terraformVersion: ''      # Terraform version
+#  tfApply: 'true'           # Terraform apply action(boolean type)
+  env: ''
 
-stages:
-  - stage: Build
-    jobs:
-      - job: BuildJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        steps:
-        - template: terraform-shared-pipeline-steps.yml
-          parameters:
-#            tfApply: 'false'
-            env: 'build'
-            vmImage: ${{ parameters.vmImage }}
-            terraformVersion: ${{ parameters.terraformVersion }}
+steps:
+  - checkout: self
 
-  - stage: DEV
-#    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: Build
-    jobs:
-    - deployment: DeployJob
-      pool:
-        vmImage: ${{ parameters.vmImage }}
-      continueOnError: false
-      environment: 'dev'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - template: terraform-shared-pipeline-steps.yml
-              parameters:
-                env: 'dev'
-                vmImage: ${{ parameters.vmImage }}
-                terraformVersion: ${{ parameters.terraformVersion }}
+  - task: DownloadSecureFile@1
+    name: secrets
+    displayName: 'Download secrets'
+    inputs:
+      secureFile: secrets.tfvars
 
-  - stage: QA
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: DEV
-    jobs:
-      - deployment: DeployJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        environment: 'qa'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: terraform-shared-pipeline-steps.yml
-                  parameters:
-                    env: 'qa'
-                    vmImage: ${{ parameters.vmImage }}
-                    terraformVersion: ${{ parameters.terraformVersion }}
+  - task: CopyFiles@2
+    displayName: 'Copy secrets'
+    inputs:
+      SourceFolder: '$(Agent.TempDirectory)'
+      Contents: '$(secrets.secureFilePath)'
+      TargetFolder: '$(Agent.BuildDirectory)'
 
-  - stage: UAT
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: DEV
-    jobs:
-      - deployment: DeployJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        environment: 'uat'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: terraform-shared-pipeline-steps.yml
-                  parameters:
-                    env: 'uat'
-                    vmImage: ${{ parameters.vmImage }}
-                    terraformVersion: ${{ parameters.terraformVersion }}
+  - task: CopyFiles@2
+    displayName: 'Copy terraform files'
+    inputs:
+      SourceFolder: '$(Build.Repository.LocalPath)'
+      Contents: |
+        **
+      TargetFolder: '$(Agent.BuildDirectory)'
 
-  - stage: PROD
-    #    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    dependsOn: UAT
-    jobs:
-      - deployment: DeployJob
-        pool:
-          vmImage: ${{ parameters.vmImage }}
-        continueOnError: false
-        environment: 'prod'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: terraform-shared-pipeline-steps.yml
-                  parameters:
-                    env: 'prod'
-                    vmImage: ${{ parameters.vmImage }}
-                    terraformVersion: ${{ parameters.terraformVersion }}
+  - task: replacetokens@3
+    displayName: 'Replace tokens'
+    inputs:
+      rootDirectory: '$(Agent.BuildDirectory)'
+      targetFiles: |
+        *.tf
+        *.tfvars
+      encoding: 'auto'
+      writeBOM: true
+      escapeType: 'none'
+      actionOnMissing: 'warn'
+      keepToken: false
+      tokenPrefix: '#{'
+      tokenSuffix: '}#'
+
+  - task: TerraformInstaller@0
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: ${{ parameters.terraformVersion }}
+
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform : init'
+    inputs:
+      workingDirectory: '$(Agent.BuildDirectory)'
+      backendServiceArm: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
+      backendAzureRmResourceGroupName: '$(storageresourcegroup)'
+      backendAzureRmStorageAccountName: '$(storageaccount)'
+      backendAzureRmContainerName: '$(storageblob)'
+      backendAzureRmKey: '$(tfstate)'
+
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform: plan'
+    inputs:
+      command: plan
+      workingDirectory: '$(Agent.BuildDirectory)'
+      commandOptions: '-var-file=secrets.tfvars'
+      environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
+
+  - task: TerraformTaskV1@0
+    displayName: 'Terraform: apply'
+#    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
+    condition: and(succeeded(), in('${{ parameters.env }}', 'dev', 'qa', 'uat', 'prod'))
+#    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      workingDirectory: '$(Agent.BuildDirectory)'
+      commandOptions: '-auto-approve -input=false -var-file=secrets.tfvars'
+      environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
+
+  - bash: echo ${{ parameters.env }}
+    displayName: 'Output the value'
