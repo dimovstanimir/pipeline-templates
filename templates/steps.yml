@@ -8,12 +8,12 @@ steps:
   - checkout: self
 
   - bash:
-      echo ${{ parameters.env }}
-      echo $(storageresourcegroup)
-      echo $(storageblob)
-      echo $(tfstate)
-      echo $(storageaccount)
-    displayName: 'Output the value'
+      echo ${{ parameters.env }}\n
+      echo $(storageresourcegroup)\n
+      echo $(storageaccount)\n
+      echo $(storageblob)\n
+      echo $(tfstate)\n
+    displayName: 'Output values'
 
   - task: DownloadSecureFile@1
     name: secrets
