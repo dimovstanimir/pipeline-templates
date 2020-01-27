@@ -100,14 +100,14 @@ steps:
       Write-Host "### Listing content of tfApply: ###"
       Write-Host "#################################"
       ""
-      cat ${{ parameters.tfApply }}
+      Write-Host ${{ parameters.tfApply }}
       ""
       Write-Host "### Listing content of tfState: ###"
       Write-Host "#################################"
       ""
-      cat ${{ parameters.tfState }}
+      Write-Host ${{ parameters.tfState }}
       ""
       Write-Host "### Listing content of terraformVersion: ###"
       Write-Host "#################################"
       ""
-      cat ${{ parameters.terraformVersion }}
+      Write-Host ${{ parameters.terraformVersion }}
