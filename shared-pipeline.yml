@@ -76,7 +76,7 @@ steps:
     inputs:
       command: plan
       workingDirectory: '$(Agent.BuildDirectory)'
-      commandOptions: '-var-file=secrets.tfvars -var-file=$(tfVars)'
+      commandOptions: -var-file=secrets.tfvars -var-file=$(tfVars)
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
 
   - task: TerraformTaskV1@0
@@ -87,5 +87,5 @@ steps:
       provider: 'azurerm'
       command: 'apply'
       workingDirectory: '$(Agent.BuildDirectory)'
-      commandOptions: '-auto-approve -input=false -var-file=secrets.tfvars -var-file=$(tfVars)'
+      commandOptions: -auto-approve -input=false -var-file=secrets.tfvars -var-file=$(tfVars)
       environmentServiceNameAzureRM: 'isolated test (a6edf9da-b31a-48ac-b34d-1a9673e0908c)'
