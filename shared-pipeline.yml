@@ -13,11 +13,12 @@ steps:
       targetType: 'inline'
       script: |
         # Write your commands here
-        echo "The value for variable 'env' is ${{ parameters.env }}"
         echo "The value for variable 'storageresourcegroup' is $(storageresourcegroup)"
         echo "The value for variable 'storageaccount' is $(storageaccount)"
         echo "The value for variable 'storageblob' is $(storageblob)"
-        echo "The value for variable 'tfstate' is $(tfstate)"
+        echo "The value for variable 'tfVars' is ${{ parameters.tfVars }}"
+        echo "The value for variable 'tfState' is ${{ parameters.tfState }}"
+        echo "The value for variable 'terraformVersion' is ${{ parameters.terraformVersion }}"
     displayName: 'Output values'
 
   - task: DownloadSecureFile@1
