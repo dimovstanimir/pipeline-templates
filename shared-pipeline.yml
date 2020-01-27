@@ -17,8 +17,11 @@ steps:
         echo "The value for variable 'storageaccount' is $(storageaccount)"
         echo "The value for variable 'storageblob' is $(storageblob)"
         echo "The value for variable 'tfVars' is ${{ parameters.tfVars }}"
+        echo "The value for variable 'tfApply' is ${{ parameters.tfApply }}"
         echo "The value for variable 'tfState' is ${{ parameters.tfState }}"
         echo "The value for variable 'terraformVersion' is ${{ parameters.terraformVersion }}"
+        echo "The content of variable 'tfVars' is:"
+        cat ${{ parameters.tfVars }}
     displayName: 'Output values'
 
   - task: DownloadSecureFile@1
