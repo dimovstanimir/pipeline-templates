@@ -92,22 +92,22 @@ steps:
 
   - powershell: |
       ""
-      Write-Host "### Listing content of tfVars: ###"
-      Write-Host "#################################"
+      Write-Host "### Verify tfVars: ###"
+      Write-Host "######################"
       ""
       cat ${{ parameters.tfVars }}
       ""
-      Write-Host "### Listing content of tfApply: ###"
-      Write-Host "#################################"
+      Write-Host "### Verify tfApply: ###"
+      Write-Host "#######################"
       ""
       Write-Host ${{ parameters.tfApply }}
       ""
-      Write-Host "### Listing content of tfState: ###"
-      Write-Host "#################################"
+      Write-Host "### Verify tfState: ###"
+      Write-Host "#######################"
       ""
       Write-Host ${{ parameters.tfState }}
       ""
-      Write-Host "### Listing content of terraformVersion: ###"
-      Write-Host "#################################"
+      Write-Host "### Verify terraformVersion: ###"
+      Write-Host "######@#########################"
       ""
       Write-Host ${{ parameters.terraformVersion }}
