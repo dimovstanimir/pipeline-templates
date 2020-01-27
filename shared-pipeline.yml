@@ -1,8 +1,8 @@
 parameters:                 # Pass parameters from upper pipeline otherwise default values are applied.
   vmImage: ''               # Agent`s images
   terraformVersion: ''      # Terraform version
-  #  tfApply: 'true'           # Terraform apply action(boolean type)
-  env: ''
+  tfApply: 'true'           # Terraform apply action(boolean type)
+#  env: ''
 
 steps:
   - checkout: self
@@ -80,9 +80,8 @@ steps:
 
   - task: TerraformTaskV1@0
     displayName: 'Terraform: apply'
-    #    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
-    condition: and(succeeded(), in('${{ parameters.env }}', 'dev', 'qa', 'uat', 'prod'))
-    #    condition: and(succeeded(), eq(variables['env'], 'dev', 'qa', 'uat, 'prod'))
+    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
+    #    condition: and(succeeded(), in('${{ parameters.env }}', 'dev', 'qa', 'uat', 'prod'))
     inputs:
       provider: 'azurerm'
       command: 'apply'
