@@ -30,6 +30,7 @@ steps:
 
   - task: PowerShell@2
     displayName: 'Terraform: apply'
+    condition: and(succeeded(), eq('${{ parameters.tfApply }}', true))
     inputs:
       targetType: 'inline'
       script: |
