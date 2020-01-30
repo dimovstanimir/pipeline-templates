@@ -38,9 +38,9 @@ steps:
         terraform workspace list
         Write-Host "### Verifying active worskapce: ###"
         terraform workspace show
-        Write-Host "### tfvars files is: $(env).tfvars ###"
+        Write-Host "### tfvars files is: $env:env.tfvars ###"
         Write-Host "### Terraform: apply ###"
-        terraform apply -auto-approve -input=false -var-file="$(env).tfvars"
+        terraform apply -auto-approve -input=false -var-file="$env:env.tfvars"
     env:
       env: ${{ parameters.env }}
       TF_VAR_client_id: $(clientId)
