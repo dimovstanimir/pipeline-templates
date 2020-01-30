@@ -1,0 +1,47 @@
+parameters:                 # Pass parameters from upper pipeline otherwise default values are applied.
+  terraformVersion: ''      # Terraform version
+  tfApply: 'true'           # Terraform apply action(boolean type)
+  env: ''                   # Environment
+
+steps:
+  - checkout: self
+
+  - task: TerraformInstaller@0
+    displayName: 'Terraform Install'
+    inputs:
+      terraformVersion: ${{ parameters.terraformVersion }}
+
+  - task: PowerShell@2
+    displayName: 'Terraform: init'
+    inputs:
+      filePath: '$(Build.Repository.LocalPath)/init.ps1'
+    env:
+      ACCESSKEY: $(storagekey)
+
+  - task: PowerShell@2
+    displayName: 'Terraform: plan'
+    inputs:
+      filePath: '$(Build.Repository.LocalPath)/plan.ps1'
+      arguments: ${{ parameters.env }}
+    env:
+      TF_VAR_client_id: $(clientId)
+      TF_VAR_client_secret: $(clientSecret)
+      TF_VAR_remote_state_access_key: $(storagekey)
+
+  - task: PowerShell@2
+    displayName: 'Terraform: apply'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "### Verifying worskapces: ###"
+        terraform workspace list
+        Write-Host "### Verifying active worskapce: ###"
+        terraform workspace show
+        Write-Host "### tfvars files is: $(env).tfvars ###"
+        Write-Host "### Terraform: apply ###"
+        terraform apply -auto-approve -input=false -var-file="$(env).tfvars"
+    env:
+      env: ${{ parameters.env }}
+      TF_VAR_client_id: $(clientId)
+      TF_VAR_client_secret: $(clientSecret)
+      TF_VAR_remote_state_access_key: $(storagekey)
